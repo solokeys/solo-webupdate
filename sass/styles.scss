@@ -1,0 +1,16 @@
+@charset "utf-8";
+
+body {
+    font-family: sans-serif;
+}
+
+$family-sans-serif: sans-serif;
+
+$red: #d83a40;
+$mint: #34c39e;
+$blue: #3392e5;
+
+$primary: $blue;
+
+// cut this down later
+@import "../tools/bulma/bulma.sass";

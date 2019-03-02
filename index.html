@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Solo Webupdate</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+</head>
+
+<body onload="prepare()">
+  <div id="app">
+    <section class="section">
+      <div class="container">
+        <h1 class="title">
+          Solo Webupdate
+        </h1>
+        <p class="content">
+          <!-- https://stackoverflow.com/a/47033801/4768845
+          <span v-if="data.platform_description" v-text="data.platform_description"</span>
+          -->
+          {{ platform_description }}
+          <br>
+          {{ webauthn_support }}
+          <br>
+          Solo firmware version: {{ solo_version }}
+          <br>
+          Latest Solo firmware version: {{ stable_version }}
+        </p>
+        <button onclick="inspect()" class="button is-primary">Inspect Key</button>
+      </div>
+    </section>
+    <section class="section">
+      <div class="container">
+        <p class="content" v-if="is_solo_secure">
+          Your key is a Solo Secure!
+        </p>
+        <p class="content" v-if="is_solo_hacker">
+          Your key is Solo Hacker!
+        </p>
+      </div>
+      <div class="container" v-if="needs_update">
+        <p>
+          Since the firmware is out of date, it needs an update.
+          <br>
+          Please unplug your key, and plug in while keeping pressed until the LED blinks.
+        </p>
+        <button onclick="update()" class="button is-primary" v-if="is_solo_secure">Update Solo Secure</button>
+        <button onclick="update()" class="button is-primary" v-if="is_solo_hacker">Update Solo Hacker</button>
+        <p>
+          <span v-if="update_status" v-text="update_status"></span>
+          <br>
+          <span v-if="update_progress" v-text="update_progress"></span>
+        </p>
+      </div>
+      <div class="container" v-else-if="is_solo_secure || is_solo_hacker">
+        <p>
+          Your firmware seems up to date! For testing, you can flash it again.
+          <br>
+          For this, unplug your key, and plug in while keeping pressed until the LED blinks.
+        </p>
+        <button onclick="update()" class="button is-primary" v-if="is_solo_secure">Reflash Solo Secure</button>
+        <button onclick="update()" class="button is-primary" v-if="is_solo_hacker">Reflash Solo Hacker</button>
+        <p>
+          <span v-if="update_status" v-text="update_status"></span>
+          <br>
+          <span v-if="update_progress" v-text="update_progress"></span>
+        </p>
+      </div>
+    </section>
+    <section class="section">
+      <div class="container">
+        <a href="https://gitlab.com/solokeys/solo-webupdate"><img src="images/github.png" height=32 width=32>gitlab.com/solokeys/solo-webupdate</a>
+      </div>
+    </div>
+  </section>
+</body
+
+<!-- development version, includes helpful console warnings -->
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<!-- production version, optimized for size and speed -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/vue"></script> -->
+
+<!-- external; permissive licenses -->
+<script src="js/vendor/cbor.js"></script>
+<script src="js/vendor/platform.js"></script>
+<script src="js/vendor/sha256.js"></script>
+<script src="js/vendor/intel-hex.js"></script>
+<script src="js/vendor/u2f-api.js"></script>
+
+<!-- our stuff -->
+<script src="js/constants.js"></script>
+<script src="js/helpers.js"></script>
+<script src="js/ctaphid.js"></script>
+<script src="js/main.js"></script>
+</html>
