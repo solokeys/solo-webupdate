@@ -1,6 +1,6 @@
-#!/bin/sh
+#!/bin/bash -xe
 
-# apt install inotify-tools
+# sudo apt install inotify-tools
 
 sigint_handler()
 {

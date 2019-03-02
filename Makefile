@@ -1,15 +1,20 @@
-serve-local: venv styles
-	bash reloading-serve.sh venv/bin/python3 local.py
+serve-local: venv
+	scripts/reloading-serve.sh venv/bin/python3 serve-local.py
 
+setup-local: venv get-bulma get-sass fetch-firmware
+setup-local-full: setup-local get-bulma get-sass styles
+
+# Only needed to experiment with U2F
+# WebAuthn accepts http://localhost as secure origin
 localhost-cert:
-	./make-localhost-cert.sh
+	scripts/make-localhost-cert.sh
 
 fetch-firmware:
-	./fetch-firmware.sh
+	scripts/fetch-firmware.sh
 
 venv:
 	python3 -m venv venv
-	pip3 install -U pip
+	venv/bin/pip3 install -U pip
 
 styles:
 	tools/dart-sass/sass -s compressed sass/styles.scss css/styles.css

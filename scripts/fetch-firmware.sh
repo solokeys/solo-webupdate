@@ -11,6 +11,7 @@ wget -P data/ https://github.com/solokeys/solo/releases/download/${STABLE_VERSIO
 wget -P data/ https://github.com/solokeys/solo/releases/download/${STABLE_VERSION}/firmware-hacker-${STABLE_VERSION}.hex
 wget -P data/ https://github.com/solokeys/solo/releases/download/${STABLE_VERSION}/firmware-hacker-${STABLE_VERSION}.sha2
 cd data/
+# TODO (possibly in main.js): Check sha2 on firmware embedded in the signed .json
 # sha256sum -c firmware-secure-${STABLE_VERSION}.sha2
 sha256sum -c firmware-hacker-${STABLE_VERSION}.sha2
 cd ..
