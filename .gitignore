@@ -2,3 +2,5 @@ localhost.key
 localhost.crt
 venv/
 tools/
+data/*
+!data/.gitkeep

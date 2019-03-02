@@ -10,6 +10,7 @@ var app = new Vue({
     is_solo_secure: false,
     is_solo_hacker: false,
     needs_update: false,
+    correct_firmware: false,
     signed_firmware: null,
     update_status: null,
     update_progress: null,
@@ -41,12 +42,20 @@ async function check_version(){
 }
 
 async function fetch_stable_version() {
-  let response = await fetch(
+  var response = await fetch(
     "https://raw.githubusercontent.com/solokeys/solo/master/STABLE_VERSION");
-  let stable_version = (await response.text()).trim();
-  // let stable_version = stable_version.trim();
-  app.stable_version = stable_version;
-  app.stable_version_parts = new Uint8Array(stable_version.split(".").map(Number));
+  let stable_version_github = (await response.text()).trim();
+  var response = await fetch(
+    "data/STABLE_VERSION");
+  let stable_version_fetched = (await response.text()).trim();
+  if (stable_version_github != stable_version_fetched) {
+    app.stable_version = "fetched firmware out of data";
+    app.correct_firmware = false;
+  } else {
+    app.stable_version = stable_version_fetched;
+    app.stable_version_parts = new Uint8Array(stable_version_fetched.split(".").map(Number));
+    app.correct_firmware = true;
+  }
 }
 
 async function prepare() {
@@ -133,10 +142,9 @@ async function inspect() {
 }
 
 async function fetch_firmware() {
-  let proxy_url = 'https://cors-anywhere.herokuapp.com/';
-  url_base = "https://github.com/solokeys/solo/releases/download/" + app.stable_version + "/";
+  url_base = "data/";
   if (app.is_solo_secure) {
-    let file_url = proxy_url + url_base + "firmware-secure-" + app.stable_version + ".json";
+    let file_url = url_base + "firmware-secure-" + app.stable_version + ".json";
     console.log(file_url);
 
     let fetched = await fetch(file_url);
@@ -152,7 +160,7 @@ async function fetch_firmware() {
   }
 
   if (app.is_solo_hacker) {
-    let file_url = proxy_url + url_base + "firmware-hacker-" + app.stable_version + ".hex";
+    let file_url = url_base + "firmware-hacker-" + app.stable_version + ".hex";
     console.log(file_url);
     let fetched = await fetch(file_url);
     let firmware = await fetched.text();

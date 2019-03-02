@@ -1,6 +1,12 @@
 serve-local: venv styles
 	bash reloading-serve.sh venv/bin/python3 local.py
 
+localhost-cert:
+	./make-localhost-cert.sh
+
+fetch-firmware:
+	./fetch-firmware.sh
+
 venv:
 	python3 -m venv venv
 	pip3 install -U pip

@@ -1,0 +1,8 @@
+[build]
+  command = "make fetch-firmware"
+
+[[redirects]]
+  from = "https://genuine.solokeys.com/*"
+  to = "https://update.solokeys.com/:splat"
+  status = 302
+  force = true

@@ -39,34 +39,45 @@
           Your key is Solo Hacker!
         </p>
       </div>
-      <div class="container" v-if="needs_update">
-        <p>
-          Since the firmware is out of date, it needs an update.
-          <br>
-          Please unplug your key, and plug in while keeping pressed until the LED blinks.
-        </p>
-        <button onclick="update()" class="button is-primary" v-if="is_solo_secure">Update Solo Secure</button>
-        <button onclick="update()" class="button is-primary" v-if="is_solo_hacker">Update Solo Hacker</button>
-        <p>
-          <span v-if="update_status" v-text="update_status"></span>
-          <br>
-          <span v-if="update_progress" v-text="update_progress"></span>
-        </p>
-      </div>
-      <div class="container" v-else-if="is_solo_secure || is_solo_hacker">
-        <p>
-          Your firmware seems up to date! For testing, you can flash it again.
-          <br>
-          For this, unplug your key, and plug in while keeping pressed until the LED blinks.
-        </p>
-        <button onclick="update()" class="button is-primary" v-if="is_solo_secure">Reflash Solo Secure</button>
-        <button onclick="update()" class="button is-primary" v-if="is_solo_hacker">Reflash Solo Hacker</button>
-        <p>
-          <span v-if="update_status" v-text="update_status"></span>
-          <br>
-          <span v-if="update_progress" v-text="update_progress"></span>
-        </p>
-      </div>
+      <template v-if="correct_firmware">
+        <div class="container" v-if="needs_update">
+          <p>
+            Since the firmware is out of date, it needs an update.
+            <br>
+            Please unplug your key, and plug in while keeping pressed until the LED blinks.
+          </p>
+          <button onclick="update()" class="button is-primary" v-if="is_solo_secure">Update Solo Secure</button>
+          <button onclick="update()" class="button is-primary" v-if="is_solo_hacker">Update Solo Hacker</button>
+          <p>
+            <span v-if="update_status" v-text="update_status"></span>
+            <br>
+            <span v-if="update_progress" v-text="update_progress"></span>
+          </p>
+        </div>
+        <div class="container" v-else-if="is_solo_secure || is_solo_hacker">
+          <p>
+            Your firmware seems up to date! For testing, you can flash it again.
+            <br>
+            For this, unplug your key, and plug in while keeping pressed until the LED blinks.
+          </p>
+          <button onclick="update()" class="button is-primary" v-if="is_solo_secure">Reflash Solo Secure</button>
+          <button onclick="update()" class="button is-primary" v-if="is_solo_hacker">Reflash Solo Hacker</button>
+          <p>
+            <span v-if="update_status" v-text="update_status"></span>
+            <br>
+            <span v-if="update_progress" v-text="update_progress"></span>
+          </p>
+        </div>
+      </template>
+      <template v-else>
+        <div class="container">
+          <h2 class="subtitle">
+            This site's firmware is out of date! Please inform SoloKeys!
+            <br>
+            Firmware flashing deactivated.
+          </h2>
+        </div>
+      </template>
     </section>
     <section class="section">
       <div class="container">
