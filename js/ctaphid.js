@@ -1,4 +1,4 @@
-async function ctaphid_via_webauthn(cmd, addr, data) {
+async function ctaphid_via_webauthn(cmd, addr, data, timeout) {
   // if a token does not support CTAP2, WebAuthn re-encodes as CTAP1/U2F:
   // https://fidoalliance.org/specs/fido-v2.0-rd-20170927/fido-client-to-authenticator-protocol-v2.0-rd-20170927.html#interoperating-with-ctap1-u2f-authenticators
   //
@@ -17,8 +17,7 @@ async function ctaphid_via_webauthn(cmd, addr, data) {
           id: keyhandle,
           type: 'public-key',
       }],
-      // userVerification: "discouraged",
-      timeout: -1,
+      timeout: timeout,
   }
 
   return navigator.credentials.get({

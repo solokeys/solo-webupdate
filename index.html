@@ -16,29 +16,64 @@
           Solo Webupdate
         </h1>
         <p class="content">
-          <!-- https://stackoverflow.com/a/47033801/4768845
-          <span v-if="data.platform_description" v-text="data.platform_description"</span>
-          -->
-          {{ platform_description }}
+          <!-- https://stackoverflow.com/a/47033801/4768845 -->
+          <span v-if="platform_description" v-text="platform_description"></span>
           <br>
-          {{ webauthn_support }}
+
+          <span v-if="webauthn_support" v-text="webauthn_support"></span>
           <br>
-          Solo firmware version: {{ solo_version }}
+
+          Solo firmware version:
+          <span v-if="solo_version" v-text="solo_version"></span>
+          <span v-else>unknown</span>
           <br>
-          Latest Solo firmware version: {{ stable_version }}
+
+          Latest Solo firmware version:
+          <span v-if="stable_version" v-text="stable_version"></span>
+          <span v-else>unknown</span>
         </p>
-        <button onclick="inspect()" class="button is-primary">Inspect Key</button>
+        <div class="content">
+          <button onclick="inspect()" class="button is-primary">Inspect Key</button>
+        </div>
+
+        <template v-if="ask_for_attestation">
+          <article class="message is-warning">
+            <div class="message-header">
+              <p>INSPECTING KEY</p>
+            </div>
+            <div class="message-body">
+              Please press the button on your key!
+              <br>
+              If nothing happens, replug and press again.
+            </div>
+          </article>
+        </template>
+
+        <template v-if="cannot_inspect">
+          <article class="message is-danger">
+            <div class="message-header">
+              <p>DEVICE IS IN BOOTLOADER MODE</p>
+            </div>
+            <div class="message-body">
+              <ul>
+                <li class="list-item"> To inspect your key, unplug, replug, and try to inspect again </li>
+                <li class="list-item"> If your key remains in bootloader mode, try "advanced mode" below, and flash the appropriate firmware (secure/hacker).</li>
+              </ul>
+            </div>
+          </article>
+        </template>
       </div>
     </section>
+
+
+
+
     <section class="section">
       <div class="container">
-        <p class="content" v-if="is_solo_secure">
-          Your key is a Solo Secure!
-        </p>
-        <p class="content" v-if="is_solo_hacker">
-          Your key is Solo Hacker!
-        </p>
+        <p class="content" v-if="is_solo_secure">Your key is a Solo Secure!</p>
+        <p class="content" v-if="is_solo_hacker">Your key is a Solo Hacker!</p>
       </div>
+
       <template v-if="correct_firmware">
         <div class="container" v-if="needs_update">
           <p>
@@ -66,25 +101,66 @@
             <span v-if="update_status" v-text="update_status"></span>
             <br>
             <span v-if="update_progress" v-text="update_progress"></span>
+            <progress class="progress is-success is-large" v-bind:value="p_progress" max="100" v-if="p_progress">{{ p_progress }}%</progress>
           </p>
         </div>
       </template>
+
       <template v-else>
-        <div class="container">
-          <h2 class="subtitle">
-            This site's firmware is out of date! Please inform SoloKeys!
-            <br>
-            Firmware flashing deactivated.
-          </h2>
-        </div>
+        <article class="message is-danger">
+          <div class="message-header">
+            <p>SITE FIRMWARE OUT OF DATE!</p>
+          </div>
+          <div class="message-body">
+            <p>Please inform SoloKeys!</p>
+            <p>Firmware flashing deactivated.</p>
+          </div>
+        </article>
       </template>
+
+      <template v-if="update_success">
+        <article class="message is-success">
+          <div class="message-header">
+            <p>UPDATE SUCCESSFUL!</p>
+          </div>
+          <div class="message-body">
+            Your key is now updated.
+          </div>
+        </article>
+      </template>
+
+      <template v-if="cannot_flash">
+        <article class="message is-danger">
+          <div class="message-header">
+            <p>DEVICE IS NOT IN BOOTLOADER MODE</p>
+          </div>
+          <div class="message-body">
+            <p>Please unplug your key, and plug in while keeping pressed until the LED blinks.</p>
+            <p>Then try to flash again</p>
+          </div>
+        </article>
+      </template>
+
     </section>
     <section class="section">
       <div class="container">
         <a href="https://github.com/solokeys/solo-webupdate"><img src="images/github.png" height=32 width=32>github.com/solokeys/solo-webupdate</a>
       </div>
-    </div>
-  </section>
+    </section>
+    <section class="section">
+      <div class="container">
+        <button onclick="toggle_advanced_mode()" class="button is-light">Advanced Mode (DANGER ZONE!)</button>
+        <template v-if="advanced_mode">
+          <br>
+          <br>
+          <button onclick="update_secure()" class="button is-primary">I CONFIRM: Solo Secure plugged in - reflash it</button>
+          <br>
+          <br>
+          <button onclick="update_hacker()" class="button is-primary">I CONFIRM: Solo Hacker plugged in - reflash it</button>
+        </template>
+      </div>
+    </section>
+  </div>
 </body
 
 <!-- development version, includes helpful console warnings -->
