@@ -19,7 +19,7 @@ venv:
 styles:
 	tools/dart-sass/sass -s compressed sass/styles.scss css/styles.css
 
-BULMA_VERSION = "0.7.2"
+BULMA_VERSION = "0.7.4"
 get-bulma:
 	mkdir -p tools
 	rm -rf tools/bulma
