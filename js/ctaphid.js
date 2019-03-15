@@ -49,9 +49,8 @@ function encode_ctaphid_request_as_keyhandle(cmd, addr, data) {
     console.log('REQUEST ADDR', addr);
     console.log('REQUEST DATA', data);
 
-    // for some reason, doesn't work with this
-    //data = data || new Uint8Array(1);
-    data = data || new Uint8Array(16).fill(65);
+    // should we check that `data` is either null or an Uint8Array?
+    data = data || new Uint8Array();
 
     const offset = 10;
 
@@ -59,7 +58,9 @@ function encode_ctaphid_request_as_keyhandle(cmd, addr, data) {
         throw new Error("Max size exceeded");
     }
 
-    var array = new Uint8Array(offset + data.length);
+    // on Solo side, `is_extension_request` expects at least 16 bytes of data
+    const data_pad = data.length < 16 ? 16 - data.length : 0;
+    var array = new Uint8Array(offset + data.length + data_pad);
 
     array[0] = cmd & 0xff;
 
