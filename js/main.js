@@ -20,6 +20,7 @@ var app = new Vue({
     cannot_flash: null,
     update_success: null,
     p_progress: null,
+    is_linux: null,
   }
 });
 
@@ -41,6 +42,9 @@ async function inspect_browser() {
     app.webauthn_support = "Your browser does not support WebAuthn, please use another one";
   } else {
     app.webauthn_support = "Your browser supports WebAuthn";
+  }
+  if (platform.os["family"] == "Linux") {
+    app.is_linux = true;
   }
 }
 

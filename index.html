@@ -32,6 +32,18 @@
           <span v-if="stable_version" v-text="stable_version"></span>
           <span v-else>unknown</span>
         </p>
+        <template v-if="is_linux">
+          <div class="message is-warning">
+            <div class="message-header">
+              <p>Linux needs udev rules</p>
+            </div>
+            <div class="message-body">
+              <p>On Linux, you likely need "udev rules" installed to use your key.</p>
+              <p>See <a href="https://docs.solokeys.io/solo/udev/">https://docs.solokeys.io/solo/udev/</a> for more information.</p>
+            </div>
+          </div>
+        </template>
+
         <div class="content">
           <button onclick="inspect()" class="button is-primary">Inspect Key</button>
         </div>
