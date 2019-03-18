@@ -1,3 +1,5 @@
+[![Netlify Status](https://api.netlify.com/api/v1/badges/cf747fa0-e4d2-4405-897c-47cc3affba8e/deploy-status)](https://app.netlify.com/sites/solokeys-webupdate/deploys)
+
 # solo-webupdate
 
 ## What is this?
