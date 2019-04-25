@@ -58,11 +58,9 @@ Note that you may get messages about missing packages and dependencies when runn
 
 ## Troubleshooting
 
-* To avoid issues, run solo-webupdate (online or locally) with the Chrome browser and _not_ in incognito/private browsing mode.
-* If your solokey is stuck in bootloader mode (yellow flashing LED) and webupdate won't detect it, then you may need to use _Advanced Mode_ to re-flash the Solo Key.
-	1. Make sure you know version of the Solo Key you are working with. It's either _Solo Secure_ or _Solo Hacker_.
+* If your Solo is stuck in bootloader mode (yellow flashing LED) and webupdate won't detect it, then you may need to use _Advanced Mode_ to re-flash the Solo Key.
+	1. Make sure you know which version of the Solo Key you are working with. It's either _Solo Secure_ or _Solo Hacker_.
 	1. Click on the _Advanced Mode (DANGER ZONE)_ button.
 	1. Select the appropriate Solo Key version you have and follow the on-screen instructions.
-  
 
 One technical detail: Our official firmware builds are hosted as releases under <https://github.com/solokeys/solo/releases>, with the file [STABLE_VERSION](https://github.com/solokeys/solo/blob/master/STABLE_VERSION) specifying the latest stable version. Unfortunately, due to [CORS](https://en.wikipedia.org/wiki/Cross-origin_resource_sharing) restrictions, these files can't be fetched by your browser during the update process. For this reason, the current latest builds are [fetched and hosted](https://github.com/solokeys/solo-webupdate/blob/master/scripts/fetch-firmware.sh) on the update site itself, which always checks whether its firmware is out of date.
