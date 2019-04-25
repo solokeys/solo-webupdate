@@ -107,6 +107,32 @@
             <br>
             For this, unplug your key, and plug in while keeping pressed until the LED blinks.
           </p>
+
+          <template v-if="cannot_flash">
+            <article class="message is-danger">
+              <div class="message-header">
+                <p>DEVICE IS NOT IN BOOTLOADER MODE</p>
+              </div>
+              <div class="message-body">
+                <p>Please unplug your key, and plug in while keeping pressed until the LED blinks.</p>
+                <p>Then try to flash again</p>
+              </div>
+            </article>
+          </template>
+
+          <template>
+            <article class="message is-warning">
+              <div class="message-header">
+                <p>DO NOT TAB OUT</p>
+              </div>
+              <div class="message-body">
+                During the firmware update, you will see flashing popups - this is normal.
+                <br>
+                Do NOT TAB OUT during the update, or it will abort.
+              </div>
+            </article>
+          </template>
+
           <button onclick="update()" class="button is-primary" v-if="is_solo_secure">Reflash Solo Secure</button>
           <button onclick="update()" class="button is-primary" v-if="is_solo_hacker">Reflash Solo Hacker</button>
           <p>
@@ -115,6 +141,18 @@
             <span v-if="update_progress" v-text="update_progress"></span>
             <progress class="progress is-success is-large" v-bind:value="p_progress" max="100" v-if="p_progress">{{ p_progress }}%</progress>
           </p>
+
+          <template v-if="update_success">
+            <article class="message is-success">
+              <div class="message-header">
+                <p>UPDATE SUCCESSFUL!</p>
+              </div>
+              <div class="message-body">
+                Your key is now updated.
+              </div>
+            </article>
+          </template>
+
         </div>
       </template>
 
@@ -126,29 +164,6 @@
           <div class="message-body">
             <p>Please inform SoloKeys!</p>
             <p>Firmware flashing deactivated.</p>
-          </div>
-        </article>
-      </template>
-
-      <template v-if="update_success">
-        <article class="message is-success">
-          <div class="message-header">
-            <p>UPDATE SUCCESSFUL!</p>
-          </div>
-          <div class="message-body">
-            Your key is now updated.
-          </div>
-        </article>
-      </template>
-
-      <template v-if="cannot_flash">
-        <article class="message is-danger">
-          <div class="message-header">
-            <p>DEVICE IS NOT IN BOOTLOADER MODE</p>
-          </div>
-          <div class="message-body">
-            <p>Please unplug your key, and plug in while keeping pressed until the LED blinks.</p>
-            <p>Then try to flash again</p>
           </div>
         </article>
       </template>

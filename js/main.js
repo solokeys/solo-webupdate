@@ -19,6 +19,7 @@ var app = new Vue({
     cannot_inspect: null,
     cannot_flash: null,
     update_success: null,
+    about_to_flash: null,
     p_progress: null,
     is_linux: null,
   }
