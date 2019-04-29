@@ -91,7 +91,9 @@
           <p>
             Since the firmware is out of date, it needs an update.
             <br>
-            Please unplug your key, and plug in while keeping pressed until the LED blinks.
+            Please unplug your key, and plug it back in while holding the button pressed until the LED blinks yellow.
+            <br>
+            You may let go of the button once the LED blinks yellow.
           </p>
           <button onclick="update()" class="button is-primary" v-if="is_solo_secure">Update Solo Secure</button>
           <button onclick="update()" class="button is-primary" v-if="is_solo_hacker">Update Solo Hacker</button>
@@ -105,7 +107,7 @@
           <p>
             Your firmware seems up to date! For testing, you can flash it again.
             <br>
-            For this, unplug your key, and plug in while keeping pressed until the LED blinks.
+            For this, unplug your key, and plug in while keeping pressed until the LED blinks yellow.
           </p>
 
           <template v-if="cannot_flash">
@@ -114,7 +116,7 @@
                 <p>DEVICE IS NOT IN BOOTLOADER MODE</p>
               </div>
               <div class="message-body">
-                <p>Please unplug your key, and plug in while keeping pressed until the LED blinks.</p>
+                <p>Please unplug your key, and plug in while keeping pressed until the LED blinks yellow.</p>
                 <p>Then try to flash again</p>
               </div>
             </article>
