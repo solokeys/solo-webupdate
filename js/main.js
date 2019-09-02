@@ -118,7 +118,9 @@ async function create_direct_attestation(timeout) {
 			name: 'SoloKeys Service Station',
 			id: rp_id,
 		},
-
+    authenticatorSelection: {
+      userVerification: 'discouraged',
+    },
 		attestation: 'direct',
 
 		challenge,

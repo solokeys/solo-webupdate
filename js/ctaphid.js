@@ -18,6 +18,7 @@ async function ctaphid_via_webauthn(cmd, addr, data, timeout) {
           type: 'public-key',
       }],
       timeout: timeout,
+      userVerification: 'discouraged',
   }
 
   return navigator.credentials.get({
@@ -120,4 +121,3 @@ function decode_ctaphid_response_from_signature(response) {
         signature: signature,
     };
 }
-
