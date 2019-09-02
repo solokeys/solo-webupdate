@@ -14,3 +14,10 @@ $primary: $blue;
 
 // cut this down later
 @import "../tools/bulma/bulma.sass";
+
+a[href^="https://github.com"] img {
+  margin-right: 4px;
+  width: auto;
+  height: $body-size;
+  vertical-align: middle;
+}
