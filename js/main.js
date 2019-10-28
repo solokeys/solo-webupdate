@@ -101,7 +101,7 @@ async function fetch_stable_version() {
 async function prepare() {
   await inspect_browser();
   await fetch_stable_version();
-  await check_version();
+  // await check_version();
 }
 
 async function create_direct_attestation(timeout) {
@@ -202,33 +202,26 @@ async function inspect() {
 async function fetch_firmware() {
   // TODO: cache downloads
   url_base = "data/";
-  if (app.is_solo_secure) {
-    let file_url = url_base + "firmware-secure-" + app.stable_version + ".json";
-    console.log(file_url);
+  let file_url = url_base + "firmware-" + app.stable_version + ".json";
+  console.log(file_url);
 
-    let fetched = await fetch(file_url);
-    let content = await fetched.json();
+  let fetched = await fetch(file_url);
+  let content = await fetched.json();
 
-    let firmware = websafe2string(content.firmware);
-    var signature = websafe2array(content.signature);
+  let firmware = websafe2string(content.firmware);
+  var signature = websafe2array(content.signature);
+  var sigs = []
 
-    return {
-      firmware: firmware,
-      signature: signature,
-    }
+  for (var v in content.versions){
+    sigs.push(websafe2array(content.versions[v].signature))
   }
 
-  if (app.is_solo_hacker) {
-    let file_url = url_base + "firmware-hacker-" + app.stable_version + ".hex";
-    console.log(file_url);
-    let fetched = await fetch(file_url);
-    let firmware = await fetched.text();
-
-    return {
-      firmware: firmware,
-      signature: null,
-    }
+  return {
+    firmware: firmware,
+    signature: signature,
+    sigs: sigs
   }
+
 }
 
 async function is_bootloader() {
@@ -239,15 +232,8 @@ async function is_bootloader() {
   return _is_bootloader;
 }
 
-async function update_hacker() {
-  app.is_solo_hacker = true;
-  app.is_solo_secure = false;
-  await reset_messages();
-  await toggle_advanced_mode();
-  await update();
-}
 
-async function update_secure() {
+async function update_firmware() {
   app.is_solo_hacker = false;
   app.is_solo_secure = true;
   await reset_messages();
@@ -267,6 +253,7 @@ async function update() {
 
   let firmware = signed_firmware.firmware;
   let signature = signed_firmware.signature;
+  let sigs = signed_firmware.sigs;
 
   let num_pages = 64;
 
@@ -304,12 +291,15 @@ async function update() {
   console.log("...DONE");
 
   app.update_status = "VERIFYING FIRMWARE SIGNATURE";
-  p = await ctaphid_via_webauthn(
-    CMD.boot_done, 0x8000, signature
-  );
+  for (s in sigs){
+    p = await ctaphid_via_webauthn(
+      CMD.boot_done, 0x8000, sigs[s]
+    );
+    console.log('Accepted?', p);
+  }
   app.update_status = null;
   app.update_success = true;
 
   app.signed_firmware = null;
-  await check_version();
+  // await check_version();
 }
